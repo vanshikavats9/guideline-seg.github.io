@@ -79,7 +79,7 @@
       <!-- </div> -->
     <!-- </div> -->
 
-  <!-- </div> --> --> -->
+  <!-- </div> --> 
 </nav>
 
 
@@ -171,7 +171,7 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <img src="./static/images/comparison_new2.png" alt="Guideline-Seg Teaser" style="width:100%; border-radius:8px;">
+      <img src="./static/images/comparison.png" alt="Guideline-Seg Teaser" style="width:100%; border-radius:8px;">
       <h2 class="subtitle has-text-centered" style="margin-top: 20px;">
          Qualitative comparison of our method with other state-of-the-art. Our method successfully complies with guidelines G1 [rows-(a),(c)], G2 [rows-(b),(d)], G3 and G4 [row-(e)].
       </h2>
@@ -262,121 +262,60 @@
     </div>
     <!--/ Abstract. -->
 
-    <!-- Paper video. -->
+    <!-- Overview -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Video</h2>
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
-                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-    <!--/ Paper video. -->
-  </div>
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-
-    <div class="columns is-centered">
-
-      <!-- Visual Effects. -->
-      <div class="column">
-        <div class="content">
-          <h2 class="title is-3">Visual Effects</h2>
-          <p>
-            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
-            would be impossible without nerfies since it would require going through a wall.
-          </p>
-          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dollyzoom-stacked.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ Visual Effects. -->
-
-      <!-- Matting. -->
-      <div class="column">
-        <h2 class="title is-3">Matting</h2>
-        <div class="columns is-centered">
-          <div class="column content">
-            <p>
-              As a byproduct of our method, we can also solve the matting problem by ignoring
-              samples that fall outside of a bounding box during rendering.
-            </p>
-            <video id="matting-video" controls playsinline height="100%">
-              <source src="./static/videos/matting.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <!--/ Matting. -->
-
-    <!-- Animation. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Animation</h2>
-
-        <!-- Interpolating. -->
-        <h3 class="title is-4">Interpolating states</h3>
+        <h2 class="title is-3">Pipeline Overview</h2>
         <div class="content has-text-justified">
           <p>
-            We can also animate the scene by interpolating the deformation latent codes of two input
-            frames. Use the slider here to linearly interpolate between the left frame and the right
-            frame.
+            The input image and textual guidelines undergo context construction to extract scenerelevant rules. 
+            This focused context is processed through an iterative VLM loop where the Worker segments and the Supervisor 
+            critiques and suggests improvements. The number of iterations is controlled by an adaptive iteration controller. The final output 
+            is a segmentation that faithfully adheres to long and detailed guidelines.
           </p>
         </div>
-        <div class="columns is-vcentered interpolation-panel">
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_start.jpg"
-                 class="interpolation-image"
-                 alt="Interpolate start reference image."/>
-            <p>Start Frame</p>
-          </div>
-          <div class="column interpolation-video-column">
-            <div id="interpolation-image-wrapper">
-              Loading...
-            </div>
-            <input class="slider is-fullwidth is-large is-info"
-                   id="interpolation-slider"
-                   step="1" min="0" max="100" value="0" type="range">
-          </div>
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/interpolate_end.jpg"
-                 class="interpolation-image"
-                 alt="Interpolation end reference image."/>
-            <p class="is-bold">End Frame</p>
-          </div>
-        </div>
-        <br/>
-        <!--/ Interpolating. -->
+        <figure class="image" style="margin-top: 20px;">
+      <img src="./static/images/full_pipeline_new2.png"
+           alt="Guideline-Seg Pipeline Overview"
+           style="width:100%; border-radius:8px;">
+          Overview of our pipeline. 
+    </figure>
+      </div>
+    </div>
+    <!--/ Overview -->
 
-        <!-- Re-rendering. -->
-        <h3 class="title is-4">Re-rendering the input video</h3>
+    <!-- Results -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Pipeline Overview</h2>
         <div class="content has-text-justified">
           <p>
-            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
-            viewpoint such as a stabilized camera by playing back the training deformations.
+            Our results follow directly from the design. First, the context construction via image-specific guideline retrieval prevents instruction overload, so the VLM reasons over only
+            the rules relevant to the scene, explaining robustness on long
+            guidelines. Smart crop improves initial detections of small
+            or distant instances. Second, the Worker-Supervisor decomposition allows iterative correction of missed items and false
+            positives. Third, AiRC adaptively stops refinement to balance accuracy and resource usage, avoiding premature stops or unnecessary iterations.
+            Finally, keeping VLM and SAM frozen avoids dataset-specific overfitting, working unchangeably for both Waymo and ReasonSeg datasets.
           </p>
         </div>
-        <div class="content has-text-centered">
-          <video id="replay-video"
-                 controls
-                 muted
-                 preload
-                 playsinline
-                 width="75%">
-            <source src="./static/videos/replay.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <!--/ Re-rendering. -->
+        <figure class="image" style="margin-top: 20px;">
+      <img src="./static/images/full_pipeline_new2.png"
+           alt="waymo-results"
+           style="width:100%; border-radius:8px;">
+          Qualitative comparison on waymo guideline-consistent dataset.
+    </figure>
+        <figure class="image" style="margin-top: 20px;">
+      <img src="./static/images/reasonseg_qual.png"
+           alt="reasonseg-results"
+           style="width:100%; border-radius:8px;">
+          Qualitative results on the ReasonSeg dataset over our Gemini-2.5 baseline. The textboxes represent the input reasoning text.
+    </figure>
+      </div>
+    </div>
+    <!--/ Overview -->
+    
+
+
 
       </div>
     </div>
